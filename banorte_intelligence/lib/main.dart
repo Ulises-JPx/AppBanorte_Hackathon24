@@ -6,10 +6,13 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:animated_text_kit/animated_text_kit.dart';
 
+/// @autor Ulises Jaramillo Portilla.
+
 void main() {
   runApp(const MyApp());
 }
 
+/// Clase principal de la aplicación
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -22,11 +25,121 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ChatScreen(),
+      home: const LoginScreen(),
     );
   }
 }
 
+/// Pantalla de inicio de sesión
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final String _correctUsername = 'admin';
+  final String _correctPassword = 'admin123';
+
+  /// Función para manejar el inicio de sesión
+  void _login() {
+    final username = _usernameController.text;
+    final password = _passwordController.text;
+
+    if (username == _correctUsername && password == _correctPassword) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ChatScreen()),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Usuario o contraseña incorrecta'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        color: Color(0xFFEB0029), // Fondo rojo
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'lib/assets/images/Banorte.png',
+                  height: 100,
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    labelText: 'Usuario',
+                    labelStyle: TextStyle(color: Colors.black),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                  ),
+                  style: TextStyle(color: Colors.black),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Contraseña',
+                    labelStyle: TextStyle(color: Colors.black),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                  ),
+                  obscureText: true,
+                  style: TextStyle(color: Colors.black),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _login,
+                  child: const Text('Iniciar sesión'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Pantalla del chatbot
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -38,11 +151,12 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController _userInput = TextEditingController();
   ScrollController _scrollController = ScrollController();
 
-  // Use your OpenAI API key here
-  static const apiKey = "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";  // Replace with your actual OpenAI API key
+  // Usa tu clave de API aquí
+  static const apiKey = "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";  // Reemplaza con tu clave de API de OpenAI
 
   final List<Message> _messages = [];
 
+  /// Función para enviar un mensaje
   Future<void> sendMessage() async {
     final message = _userInput.text;
 
@@ -68,6 +182,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  /// Función para generar una respuesta del chatbot
   Future<String> generateResponse(String prompt) async {
     final url = Uri.parse('https://api.gemini.com/v1/chat/completions');
     final response = await http.post(
@@ -77,7 +192,7 @@ class _ChatScreenState extends State<ChatScreen> {
         'Authorization': 'Bearer $apiKey',
       },
       body: jsonEncode({
-        "model": "gemini-pro",  // OpenAI model
+        "model": "gemini-pro",  // Modelo de OpenAI
         "prompt": prompt,
         "max_tokens": 150,
         "temperature": 0.7,
@@ -89,10 +204,11 @@ class _ChatScreenState extends State<ChatScreen> {
       return data['choices'][0]['text'].trim();
     } else {
       print('Error: ${response.body}');
-      return 'Error generating response';
+      return 'Error generando respuesta';
     }
   }
 
+  /// Función para mostrar el diálogo de nueva conversación
   void _showNewConversationDialog() {
     showDialog(
       context: context,
@@ -272,7 +388,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     borderRadius: BorderRadius.circular(15),
                                     borderSide: BorderSide(color: Color(0xFF323E48)),
                                   ),
-                                  label: Text('Enter Your Message'),
+                                  label: Text('Escribe un mensaje...'),
                                 ),
                               ),
                             ),
@@ -312,16 +428,16 @@ class _ChatScreenState extends State<ChatScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.white),
-            label: 'Home',
+            icon: Icon(Icons.smart_toy, color: Colors.white),
+            label: 'BI',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.attach_money, color: Colors.white),
+            label: 'Transferencias',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business, color: Colors.white),
-            label: 'Business',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school, color: Colors.white),
-            label: 'School',
+            label: 'Mis cuentas',
           ),
         ],
         currentIndex: 0, // Índice del ítem seleccionado
@@ -336,6 +452,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
+/// Pantalla de perfil
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

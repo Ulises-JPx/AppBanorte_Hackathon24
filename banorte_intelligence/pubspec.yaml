@@ -1,28 +1,28 @@
 name: banorte_intelligence
-description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+description: "Un nuevo proyecto Flutter."
 
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.3
+  sdk: ^3.5.3  # Especifica la versión del SDK de Dart
 
 dependencies:
   flutter:
-    sdk: flutter
-  cupertino_icons: ^1.0.8
+    sdk: flutter  # Dependencia principal de Flutter
+  cupertino_icons: ^1.0.8  # Íconos de Cupertino para iOS
   google_generative_ai: ^0.1.0  # Asegúrate de que esta versión exista en pub.dev
-  intl: ^0.17.0  # Especifica una versión para intl
-  animated_text_kit: ^4.2.1
+  intl: ^0.17.0  # Biblioteca para internacionalización
+  animated_text_kit: ^4.2.1  # Biblioteca para animaciones de texto
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
-  flutter_lints: ^4.0.0
+    sdk: flutter  # Dependencia para pruebas en Flutter
+  flutter_lints: ^4.0.0  # Reglas de linting para Flutter
 
 flutter:
-  uses-material-design: true
+  uses-material-design: true  # Usa el diseño de Material
 
   assets:
-    - lib/assets/images/Banorte_Intelligence.png
-    - lib/assets/images/Banorte_Intelligence_red.png
+    - lib/assets/images/Banorte_Intelligence.png  # Imagen de Banorte Intelligence
+    - lib/assets/images/Banorte_Intelligence_red.png  # Imagen de Banorte Intelligence en rojo
+    - lib/assets/images/Banorte.png  # Imagen de Banorte

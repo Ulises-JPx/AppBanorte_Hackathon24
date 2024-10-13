@@ -1,28 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// @autor Ulises Jaramillo Portilla.
 
-class Message{
-  final bool isUser;
-  final String message;
-  final DateTime date;
+/// Clase que representa un mensaje
+class Message {
+  final bool isUser; // Indica si el mensaje es del usuario
+  final String message; // Contenido del mensaje
+  final DateTime date; // Fecha del mensaje
 
-  Message({ required this.isUser, required this.message, required this.date});
+  Message({required this.isUser, required this.message, required this.date});
 }
 
+/// Widget que muestra un mensaje en la interfaz
 class Messages extends StatelessWidget {
+  final bool isUser; // Indica si el mensaje es del usuario
+  final String message; // Contenido del mensaje
+  final String date; // Fecha del mensaje en formato de cadena
 
-  final bool isUser;
-  final String message;
-  final String date;
-
-  const Messages(
-      {
-        super.key,
-        required this.isUser,
-        required this.message,
-        required this.date
-      });
+  const Messages({
+    super.key,
+    required this.isUser,
+    required this.message,
+    required this.date,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,29 +31,35 @@ class Messages extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(15),
       margin: EdgeInsets.symmetric(vertical: 15).copyWith(
-        left: isUser ? 100:10,
-        right: isUser ? 10: 100
+        left: isUser ? 100 : 10,
+        right: isUser ? 10 : 100,
       ),
       decoration: BoxDecoration(
         color: isUser ? Colors.blueAccent : Colors.grey.shade400,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
-          bottomLeft: isUser ? Radius.circular(10): Radius.zero,
+          bottomLeft: isUser ? Radius.circular(10) : Radius.zero,
           topRight: Radius.circular(10),
-          bottomRight: isUser ? Radius.zero : Radius.circular(10)
-        )
+          bottomRight: isUser ? Radius.zero : Radius.circular(10),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             message,
-            style: TextStyle(fontSize: 16,color: isUser ? Colors.white: Colors.black),
+            style: TextStyle(
+              fontSize: 16,
+              color: isUser ? Colors.white : Colors.black,
+            ),
           ),
           Text(
             date,
-            style: TextStyle(fontSize: 10,color: isUser ? Colors.white: Colors.black,),
-          )
+            style: TextStyle(
+              fontSize: 10,
+              color: isUser ? Colors.white : Colors.black,
+            ),
+          ),
         ],
       ),
     );
